@@ -1,0 +1,33 @@
+<parking>
+    <spot>
+        <number>23</number>
+        <area>85</area>
+        <firstname>Ivan</firstname>
+        <lastname>Ivanov</lastname>
+        <description>asd</description>
+    </spot>
+
+    <spot>
+        <number>45</number>
+        <area>123</area>
+        <firstname>Kolio</firstname>
+        <lastname>Lazarov</lastname>
+        <description>asd</description>
+    </spot>
+
+    <spot>
+        <number>90</number>
+        <area>85.7</area>
+        <firstname>Petur</firstname>
+        <lastname>Qnakiev</lastname>
+        <description>asd</description>
+    </spot>
+
+    <spot>
+        <number>113</number>
+        <area>247</area>
+        <firstname>Niki</firstname>
+        <lastname>Mantovskir</lastname>
+        <description>asd</description>
+    </spot>
+</parking>

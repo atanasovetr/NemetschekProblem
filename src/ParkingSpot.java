@@ -15,17 +15,17 @@ public class ParkingSpot {
         return number;
     }
 
-//    public void setNumber(int number) {
-//        this.number = number;
-//    }
+    public void setNumber(int number) {
+        this.number = number;
+    }
 
     public double getArea() {
         return area;
     }
 
-//    public void setArea(double area) {
-//        this.area = area;
-//    }
+    public void setArea(double area) {
+        this.area = area;
+    }
 
     public Name getName() {
         return name;
