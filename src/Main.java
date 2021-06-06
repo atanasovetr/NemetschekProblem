@@ -1,7 +1,6 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Main {
     public static void main(String[] args) {
@@ -32,8 +31,15 @@ public class Main {
                 System.out.println("3 - Sort by Number");
                 scan.nextLine();
                 String sortingOrder = scan.nextLine();
-                sortedParking.setParking(parking.sorting(sortingOrder));
-                System.out.println(sortedParking);
+                Pattern pattern = Pattern.compile("^[1-3]{1,3}$", Pattern.CASE_INSENSITIVE);
+                Matcher matcher = pattern.matcher(sortingOrder);
+                if(matcher.find()){
+                    sortedParking.setParking(parking.sorting(sortingOrder));
+                    System.out.println(sortedParking);
+                }
+                else{
+                    System.out.println("This is impossible combination");
+                }
             }
         }
     }

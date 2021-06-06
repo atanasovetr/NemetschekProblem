@@ -26,15 +26,12 @@ public class Parking {
 
         while(it.hasNext()){
             ParkingSpot ps = it.next();
-            try {
+            if(ps != null) {
                 if (ps.getNumber() == FIRST_PARKING_SPOT) {
                     firstIndex = 1;
                     sortedParkingArr[0] = ps;
                     it.remove();
                 }
-            }
-            catch(Exception e){
-                break;
             }
         }
         switch (order) {
