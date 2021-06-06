@@ -1,5 +1,6 @@
 import java.text.DecimalFormat;
 import java.util.*;
+
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
 import java.io.*;
@@ -17,22 +18,39 @@ public class Parking {
         return parking;
     }
 
-    public ParkingSpot[] sorting(){
+    public ParkingSpot[] sorting(String order){
         ParkingSpot[] sortedParkingArr = new ParkingSpot[PARKING_SIZE];
         List<ParkingSpot> parkingList = new ArrayList<>(Arrays.asList(this.parking));
-        
+        int firstIndex = 0;
         Iterator<ParkingSpot> it = parkingList.iterator();
 
         while(it.hasNext()){
             ParkingSpot ps = it.next();
-            if(ps.getNumber() == FIRST_PARKING_SPOT){
-                sortedParkingArr[0] = ps;
-                it.remove();
+            try {
+                if (ps.getNumber() == FIRST_PARKING_SPOT) {
+                    firstIndex = 1;
+                    sortedParkingArr[0] = ps;
+                    it.remove();
+                }
+            }
+            catch(Exception e){
+                break;
             }
         }
-        Collections.sort(parkingList, new SortByArea()); // Here you can choose how to sort the parking lot
-        for(int i = 1; i < PARKING_SIZE; i++){
-            sortedParkingArr[i] = parkingList.get(i-1);
+        switch (order) {
+            case "123" -> parkingList.sort(Comparator.nullsLast(new SortByArea().thenComparing(new SortByName()).thenComparing(new SortByNumber())));
+            case "12" -> parkingList.sort(Comparator.nullsLast(new SortByArea().thenComparing(new SortByName())));
+            case "13" -> parkingList.sort(Comparator.nullsLast(new SortByArea().thenComparing(new SortByNumber())));
+            case "1" -> parkingList.sort(Comparator.nullsLast(new SortByArea()));
+            case "213" -> parkingList.sort(Comparator.nullsLast(new SortByName().thenComparing(new SortByArea()).thenComparing(new SortByNumber())));
+            case "21" -> parkingList.sort(Comparator.nullsLast(new SortByName().thenComparing(new SortByArea())));
+            case "23" -> parkingList.sort(Comparator.nullsLast(new SortByName().thenComparing(new SortByNumber())));
+            case "2" -> parkingList.sort(Comparator.nullsLast(new SortByName()));
+            case "3" -> parkingList.sort(Comparator.nullsLast(new SortByNumber()));
+            default -> System.out.println("This is impossible combination");
+        }
+        for(int i = firstIndex; i < PARKING_SIZE; i++){
+            sortedParkingArr[i] = parkingList.get(i-firstIndex);
         }
         return sortedParkingArr;
     }
@@ -46,7 +64,7 @@ public class Parking {
             double area = minArea + (maxArea - minArea) * rand.nextDouble();
             area = Double.parseDouble(df.format(area));
 
-            this.parking[i] = new ParkingSpot(i+1, area, new Name("Firstname", "Lastname"), "blablabla" );
+            this.parking[i] = new ParkingSpot(i+1, area, new Person("Firstname", "Lastname"), "blablabla" );
         }
     }
 
@@ -57,31 +75,24 @@ public class Parking {
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(inputFile);
             doc.getDocumentElement().normalize();
-            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
             NodeList nList = doc.getElementsByTagName("spot");
-            System.out.println("----------------------------");
 
             for (int temp = 0; temp < nList.getLength(); temp++) {
                 Node nNode = nList.item(temp);
-                System.out.println("\nCurrent Element :" + nNode.getNodeName());
-
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
                     int numberXML = Integer.parseInt(eElement.getElementsByTagName("number").item(0).getTextContent());
                     double areaXML = Double.parseDouble(eElement.getElementsByTagName("area").item(0).getTextContent());
-                    Name nameXML = new Name(eElement.getElementsByTagName("firstname").item(0).getTextContent(),
+                    Person nameXML = new Person(eElement.getElementsByTagName("firstname").item(0).getTextContent(),
                                         eElement.getElementsByTagName("lastname").item(0).getTextContent());
                     String descriptionXML = eElement.getElementsByTagName("description").item(0).getTextContent();
-
                     this.parking[temp] = new ParkingSpot(numberXML, areaXML, nameXML, descriptionXML);
-
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 
     @Override
     public String toString() {
@@ -96,6 +107,5 @@ public class Parking {
         }
         return sb.toString();
     }
-
 
 }

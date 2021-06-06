@@ -1,10 +1,10 @@
 public class ParkingSpot {
     private int number;
     private double area;
-    private Name name;
+    private Person name;
     private String description;
 
-    public ParkingSpot(int number, double area, Name name, String description) {
+    public ParkingSpot(int number, double area, Person name, String description) {
         this.number = number;
         this.area = area;
         this.name = name;
@@ -27,11 +27,11 @@ public class ParkingSpot {
         this.area = area;
     }
 
-    public Name getName() {
+    public Person getName() {
         return name;
     }
 
-    public void setName(Name name) {
+    public void setName(Person name) {
         this.name = name;
     }
 
